@@ -126,9 +126,12 @@ export class GarminMCP extends McpAgent<Env, unknown, Props> {
 // OAuth 2.1 only: /authorize serves the Garmin connect page; grants carry oauth1 as encrypted
 // props; every /mcp request is gated on a provider-validated access token (no raw-header path).
 export default new OAuthProvider({
-  apiRoute: "/mcp",
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  apiHandler: GarminMCP.serve("/mcp") as any,
+  apiHandlers: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    "/mcp": GarminMCP.serve("/mcp") as any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    "/MCP": GarminMCP.serve("/MCP") as any,
+  },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   defaultHandler: authHandler as any,
   authorizeEndpoint: "/authorize",
